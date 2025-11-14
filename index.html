@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Main Sources of AI Risk - Comprehensive List</title>
+    <title>The Main Sources of AI Risk</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -25,148 +25,44 @@
             <p>There are so many causes or sources of AI risk that it's getting hard to keep them all in mind. I propose we keep a list of the main sources (that we know about), such that we can say that if none of these things happen, then we've mostly eliminated AI risk (as an existential risk) at least as far as we can determine. Here's a list that I spent a couple of hours enumerating and writing down. Did I miss anything important?</p>
         </section>
 
-        <div class="filter-controls">
-            <input type="text" id="searchBox" placeholder="Search risks..." />
-            <div class="category-filters">
-                <button class="filter-btn active" data-category="all">All Risks</button>
-                <button class="filter-btn" data-category="technical">Technical</button>
-                <button class="filter-btn" data-category="coordination">Coordination</button>
-                <button class="filter-btn" data-category="philosophical">Philosophical</button>
-                <button class="filter-btn" data-category="competitive">Competitive</button>
-            </div>
-        </div>
-
         <section class="risk-list">
-            <h2>Original List (March 2019)</h2>
-            <ol class="risks">
-                <li id="risk-1" class="risk-item" data-category="coordination">
-                    <span class="risk-text">Insufficient time/resources for AI safety (for example caused by <span class="tooltip-term" data-term="intelligence-explosion">intelligence explosion</span> or AI race)</span>
-                </li>
-                <li id="risk-2" class="risk-item" data-category="coordination" data-related="1">
-                    <span class="risk-text">Insufficient global coordination, leading to the above</span>
-                </li>
-                <li id="risk-3" class="risk-item" data-category="technical">
-                    <span class="risk-text">Misspecified or incorrectly learned goals/values</span>
-                </li>
-                <li id="risk-4" class="risk-item" data-category="technical">
-                    <span class="risk-text"><span class="tooltip-term" data-term="inner-optimizers">Inner optimizers</span></span>
-                </li>
-                <li id="risk-5" class="risk-item" data-category="technical">
-                    <span class="risk-text">ML differentially accelerating easy to measure goals</span>
-                </li>
-                <li id="risk-6" class="risk-item" data-category="technical" data-related="3,4">
-                    <span class="risk-text">Paul Christiano's "influence-seeking behavior" (a combination of 3 and 4 above?)</span>
-                </li>
-                <li id="risk-7" class="risk-item" data-category="coordination">
-                    <span class="risk-text">AI generally accelerating intellectual progress in a wrong direction (e.g., accelerating unsafe/risky technologies more than knowledge/wisdom about how to safely use those technologies)</span>
-                </li>
-                <li id="risk-8" class="risk-item" data-category="philosophical">
-                    <span class="risk-text"><span class="tooltip-term" data-term="metaethical-error">Metaethical error</span></span>
-                </li>
-                <li id="risk-9" class="risk-item" data-category="philosophical">
-                    <span class="risk-text"><span class="tooltip-term" data-term="metaphilosophical-error">Metaphilosophical error</span></span>
-                </li>
-                <li id="risk-10" class="risk-item" data-category="philosophical">
-                    <span class="risk-text">Other kinds of philosophical errors in AI design (e.g., giving AI a wrong prior or <span class="tooltip-term" data-term="decision-theory">decision theory</span>)</span>
-                </li>
-                <li id="risk-11" class="risk-item" data-category="technical">
-                    <span class="risk-text">Other design/coding errors (e.g., accidentally putting a minus sign in front of utility function, supposedly <span class="tooltip-term" data-term="corrigibility">corrigible</span> AI not actually being corrigible)</span>
-                </li>
-                <li id="risk-12" class="risk-item" data-category="philosophical">
-                    <span class="risk-text">Doing <span class="tooltip-term" data-term="acausal-reasoning">acausal reasoning</span> in a wrong way (e.g., failing to make good acausal trades, being acausally extorted, failing to acausally influence others who can be so influenced)</span>
-                </li>
-                <li id="risk-13" class="risk-item" data-category="philosophical">
-                    <span class="risk-text">Human-controlled AIs ending up with wrong values due to insufficient "metaphilosophical paternalism"</span>
-                </li>
-                <li id="risk-14" class="risk-item" data-category="philosophical">
-                    <span class="risk-text">Human-controlled AIs causing ethical disasters (e.g., large scale suffering that can't be "balanced out" later) prior to reaching moral/philosophical maturity</span>
-                </li>
-                <li id="risk-15" class="risk-item" data-category="philosophical">
-                    <span class="risk-text">Intentional corruption of human values</span>
-                </li>
-                <li id="risk-16" class="risk-item" data-category="philosophical">
-                    <span class="risk-text">Unintentional corruption of human values</span>
-                </li>
-                <li id="risk-17" class="risk-item" data-category="philosophical">
-                    <span class="risk-text"><span class="tooltip-term" data-term="mind-crime">Mind crime</span> (disvalue unintentionally incurred through morally relevant simulations in AIs' minds)</span>
-                </li>
-                <li id="risk-18" class="risk-item" data-category="philosophical">
-                    <span class="risk-text">Premature <span class="tooltip-term" data-term="value-lock-in">value lock-in</span> (i.e., freezing one's current conception of what's good into a utility function)</span>
-                </li>
-                <li id="risk-19" class="risk-item" data-category="coordination">
-                    <span class="risk-text">Extortion between AIs leading to vast disvalue</span>
-                </li>
-                <li id="risk-20" class="risk-item" data-category="technical">
-                    <span class="risk-text"><span class="tooltip-term" data-term="distributional-shift">Distributional shifts</span> causing apparently safe/aligned AIs to stop being safe/aligned</span>
-                </li>
-                <li id="risk-21" class="risk-item" data-category="technical">
-                    <span class="risk-text"><span class="tooltip-term" data-term="value-drift">Value drift</span> and other kinds of error as AIs self-modify, or AIs failing to solve value alignment for more advanced AIs</span>
-                </li>
-                <li id="risk-22" class="risk-item" data-category="competitive">
-                    <span class="risk-text"><span class="tooltip-term" data-term="treacherous-turn">Treacherous turn</span> / loss of property rights due to insufficient competitiveness of humans & human-aligned AIs</span>
-                </li>
-                <li id="risk-23" class="risk-item" data-category="competitive">
-                    <span class="risk-text">Gradual loss of influence due to insufficient competitiveness of humans & human-aligned AIs</span>
-                </li>
-                <li id="risk-24" class="risk-item" data-category="competitive">
-                    <span class="risk-text">Utility maximizers / goal-directed AIs having an economic and/or military competitive advantage due to relative ease of cooperation/coordination, defense against value corruption and other forms of manipulation and attack, leading to one or more of the above</span>
-                </li>
-                <li id="risk-25" class="risk-item" data-category="competitive">
-                    <span class="risk-text">In general, the most competitive type of AI being too hard to align or to safely use</span>
-                </li>
-                <li id="risk-26" class="risk-item" data-category="technical">
-                    <span class="risk-text">Computational resources being too cheap, leading to one or more of the above</span>
-                </li>
-            </ol>
-
-            <h2>Updates</h2>
-
-            <h3>Added on 6/13/19:</h3>
-            <ol class="risks" start="27">
-                <li id="risk-27" class="risk-item" data-category="technical">
-                    <span class="risk-text">Failure to learn how to deal with alignment in the many-humans, many-AIs case even if single-human, single-AI alignment is solved (suggested by William Saunders)</span>
-                </li>
-                <li id="risk-28" class="risk-item" data-category="coordination">
-                    <span class="risk-text">Economics of <span class="tooltip-term" data-term="agi">AGI</span> causing concentration of power amongst human overseers</span>
-                </li>
-                <li id="risk-29" class="risk-item" data-category="technical">
-                    <span class="risk-text">Inability to specify any 'real-world' goal for an artificial agent (suggested by Michael Cohen)</span>
-                </li>
-                <li id="risk-30" class="risk-item" data-category="coordination">
-                    <span class="risk-text">AI systems end up controlled by a group of humans representing a small range of human values (ie. an ideological or religious group that imposes values on everyone else) (suggested by William Saunders)</span>
-                </li>
-            </ol>
-
-            <h3>Added on 2/3/2020:</h3>
-            <ol class="risks" start="31">
-                <li id="risk-31" class="risk-item" data-category="coordination" data-related="27,19,12">
-                    <span class="risk-text">Failing to solve the <span class="tooltip-term" data-term="commitment-races">commitment races</span> problem, i.e. building AI in such a way that some sort of disastrous outcome occurs due to unwise premature commitments (or unwise hesitation in making commitments!). This overlaps significantly with #27, #19, and #12.</span>
-                </li>
-            </ol>
-
-            <h3>Added on 3/11/2020:</h3>
-            <ol class="risks" start="32">
-                <li id="risk-32" class="risk-item" data-category="technical" data-related="4">
-                    <span class="risk-text"><span class="tooltip-term" data-term="demons">Demons in imperfect search</span> (similar, but distinct from, inner optimizers.) See <a href="https://www.alignmentforum.org/posts/HduCjmXTBD4xYTegv/demons-in-imperfect-search" target="_blank">here</a> for illustration.</span>
-                </li>
-            </ol>
-
-            <h3>Added on 10/4/2020:</h3>
-            <ol class="risks" start="33">
-                <li id="risk-33" class="risk-item" data-category="coordination">
-                    <span class="risk-text">Persuasion tools or some other form of narrow AI leads to a massive deterioration of collective <span class="tooltip-term" data-term="epistemology">epistemology</span>, dooming humanity to stumble inexorably into some disastrous end or other.</span>
-                </li>
-            </ol>
-
-            <h3>Added on 8/31/2021:</h3>
-            <ol class="risks" start="34">
-                <li id="risk-34" class="risk-item" data-category="coordination">
-                    <span class="risk-text"><span class="tooltip-term" data-term="vulnerable-world">Vulnerable world</span> type 1: narrow AI enables many people to destroy world, e.g. R&D tools that dramatically lower the cost for building WMD's.</span>
-                </li>
-                <li id="risk-35" class="risk-item" data-category="coordination">
-                    <span class="risk-text">Vulnerable world 2a: We end up with many powerful actors able and incentivized to create civilization-devastating harms.</span>
-                </li>
-            </ol>
+            <ul class="risks">
+                <li class="risk-item">Insufficient time/resources for AI safety (for example caused by intelligence explosion or AI race)</li>
+                <li class="risk-item">Insufficient global coordination, leading to the above</li>
+                <li class="risk-item">Misspecified or incorrectly learned goals/values</li>
+                <li class="risk-item">Inner optimizers</li>
+                <li class="risk-item">ML differentially accelerating easy to measure goals</li>
+                <li class="risk-item">Paul Christiano's "influence-seeking behavior" (a combination of 3 and 4 above?)</li>
+                <li class="risk-item">AI generally accelerating intellectual progress in a wrong direction (e.g., accelerating unsafe/risky technologies more than knowledge/wisdom about how to safely use those technologies)</li>
+                <li class="risk-item">Metaethical error</li>
+                <li class="risk-item">Metaphilosophical error</li>
+                <li class="risk-item">Other kinds of philosophical errors in AI design (e.g., giving AI a wrong prior or decision theory)</li>
+                <li class="risk-item">Other design/coding errors (e.g., accidentally putting a minus sign in front of utility function, supposedly corrigible AI not actually being corrigible)</li>
+                <li class="risk-item">Doing acausal reasoning in a wrong way (e.g., failing to make good acausal trades, being acausally extorted, failing to acausally influence others who can be so influenced)</li>
+                <li class="risk-item">Human-controlled AIs ending up with wrong values due to insufficient "metaphilosophical paternalism"</li>
+                <li class="risk-item">Human-controlled AIs causing ethical disasters (e.g., large scale suffering that can't be "balanced out" later) prior to reaching moral/philosophical maturity</li>
+                <li class="risk-item">Intentional corruption of human values</li>
+                <li class="risk-item">Unintentional corruption of human values</li>
+                <li class="risk-item">Mind crime (disvalue unintentionally incurred through morally relevant simulations in AIs' minds)</li>
+                <li class="risk-item">Premature value lock-in (i.e., freezing one's current conception of what's good into a utility function)</li>
+                <li class="risk-item">Extortion between AIs leading to vast disvalue</li>
+                <li class="risk-item">Distributional shifts causing apparently safe/aligned AIs to stop being safe/aligned</li>
+                <li class="risk-item">Value drift and other kinds of error as AIs self-modify, or AIs failing to solve value alignment for more advanced AIs</li>
+                <li class="risk-item">Treacherous turn / loss of property rights due to insufficient competitiveness of humans & human-aligned AIs</li>
+                <li class="risk-item">Gradual loss of influence due to insufficient competitiveness of humans & human-aligned AIs</li>
+                <li class="risk-item">Utility maximizers / goal-directed AIs having an economic and/or military competitive advantage due to relative ease of cooperation/coordination, defense against value corruption and other forms of manipulation and attack, leading to one or more of the above</li>
+                <li class="risk-item">In general, the most competitive type of AI being too hard to align or to safely use</li>
+                <li class="risk-item">Computational resources being too cheap, leading to one or more of the above</li>
+                <li class="risk-item">Failure to learn how to deal with alignment in the many-humans, many-AIs case even if single-human, single-AI alignment is solved (suggested by William Saunders)</li>
+                <li class="risk-item">Economics of AGI causing concentration of power amongst human overseers</li>
+                <li class="risk-item">Inability to specify any 'real-world' goal for an artificial agent (suggested by Michael Cohen)</li>
+                <li class="risk-item">AI systems end up controlled by a group of humans representing a small range of human values (ie. an ideological or religious group that imposes values on everyone else) (suggested by William Saunders)</li>
+                <li class="risk-item">Failing to solve the commitment races problem, i.e. building AI in such a way that some sort of disastrous outcome occurs due to unwise premature commitments (or unwise hesitation in making commitments!). This overlaps significantly with #27, #19, and #12.</li>
+                <li class="risk-item">Demons in imperfect search (similar, but distinct from, inner optimizers.) See <a href="https://www.alignmentforum.org/posts/HduCjmXTBD4xYTegv/demons-in-imperfect-search" target="_blank">here</a> for illustration.</li>
+                <li class="risk-item">Persuasion tools or some other form of narrow AI leads to a massive deterioration of collective epistemology, dooming humanity to stumble inexorably into some disastrous end or other.</li>
+                <li class="risk-item">Vulnerable world type 1: narrow AI enables many people to destroy world, e.g. R&D tools that dramatically lower the cost for building WMD's.</li>
+                <li class="risk-item">Vulnerable world 2a: We end up with many powerful actors able and incentivized to create civilization-devastating harms.</li>
+            </ul>
         </section>
 
         <section class="note">
@@ -180,7 +76,5 @@
             </p>
         </footer>
     </div>
-
-    <script src="script.js"></script>
 </body>
 </html>
