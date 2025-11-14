@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Risk Categories - Venn Diagram</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f8f9fa;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        h1 {
+            font-size: 2rem;
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            color: #7f8c8d;
+            font-size: 1rem;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-bottom: 20px;
+            color: #3498db;
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+
+        .venn-container {
+            position: relative;
+            width: 100%;
+            height: 600px;
+            margin: 40px 0;
+        }
+
+        svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        .circle {
+            opacity: 0.6;
+            cursor: pointer;
+            transition: opacity 0.3s ease;
+        }
+
+        .circle:hover {
+            opacity: 0.8;
+        }
+
+        .circle-label {
+            font-size: 16px;
+            font-weight: 600;
+            pointer-events: none;
+            text-anchor: middle;
+        }
+
+        .risk-marker {
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .risk-marker:hover {
+            r: 8;
+        }
+
+        .risk-number {
+            font-size: 11px;
+            font-weight: 600;
+            text-anchor: middle;
+            pointer-events: none;
+            fill: white;
+        }
+
+        .tooltip-box {
+            position: absolute;
+            background: #2c3e50;
+            color: white;
+            padding: 12px 16px;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            max-width: 350px;
+            z-index: 1000;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.25);
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.2s ease;
+        }
+
+        .tooltip-box.show {
+            opacity: 1;
+        }
+
+        .tooltip-number {
+            font-weight: 700;
+            color: #3498db;
+            margin-right: 8px;
+        }
+
+        .legend {
+            display: flex;
+            gap: 30px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 40px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 6px;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .legend-color {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            opacity: 0.6;
+        }
+
+        .stats {
+            margin-top: 30px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .stat-box {
+            padding: 20px;
+            background: #ecf0f1;
+            border-radius: 6px;
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #2c3e50;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: #7f8c8d;
+            margin-top: 5px;
+        }
+
+        .note {
+            margin-top: 40px;
+            padding: 20px;
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            border-radius: 4px;
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="index.html" class="back-link">← Back to main list</a>
+
+        <header>
+            <h1>AI Risk Categories Visualizer</h1>
+            <p class="subtitle">Interactive Venn diagram showing how risks overlap across categories</p>
+        </header>
+
+        <div class="venn-container">
+            <svg id="venn-svg"></svg>
+        </div>
+
+        <div class="legend">
+            <div class="legend-item">
+                <div class="legend-color" style="background-color: #3498db;"></div>
+                <span>Technical (9 risks)</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background-color: #e67e22;"></div>
+                <span>Coordination (11 risks)</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background-color: #9b59b6;"></div>
+                <span>Philosophical (9 risks)</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background-color: #e74c3c;"></div>
+                <span>Competitive (6 risks)</span>
+            </div>
+        </div>
+
+        <div class="stats">
+            <div class="stat-box">
+                <div class="stat-number">35</div>
+                <div class="stat-label">Total Risks</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-number">4</div>
+                <div class="stat-label">Categories</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-number" id="overlap-count">0</div>
+                <div class="stat-label">Overlapping Risks</div>
+            </div>
+        </div>
+
+        <div class="note">
+            <strong>Note:</strong> This visualization places each risk in its primary category. In reality, many risks span multiple categories - for example, coordination failures often have technical and competitive aspects. Hover over any numbered circle to see the full risk description.
+        </div>
+    </div>
+
+    <div class="tooltip-box" id="tooltip"></div>
+
+    <script>
+        // Risk data
+        const risks = {
+            technical: [
+                { id: 3, text: "Misspecified or incorrectly learned goals/values" },
+                { id: 4, text: "Inner optimizers" },
+                { id: 5, text: "ML differentially accelerating easy to measure goals" },
+                { id: 6, text: "Paul Christiano's influence-seeking behavior" },
+                { id: 11, text: "Other design/coding errors" },
+                { id: 20, text: "Distributional shifts causing apparently safe/aligned AIs to stop being safe/aligned" },
+                { id: 21, text: "Value drift and other kinds of error as AIs self-modify" },
+                { id: 27, text: "Failure to learn how to deal with alignment in the many-humans, many-AIs case" },
+                { id: 29, text: "Inability to specify any 'real-world' goal for an artificial agent" },
+                { id: 32, text: "Demons in imperfect search" }
+            ],
+            coordination: [
+                { id: 1, text: "Insufficient time/resources for AI safety" },
+                { id: 2, text: "Insufficient global coordination" },
+                { id: 7, text: "AI generally accelerating intellectual progress in a wrong direction" },
+                { id: 19, text: "Extortion between AIs leading to vast disvalue" },
+                { id: 26, text: "Computational resources being too cheap" },
+                { id: 28, text: "Economics of AGI causing concentration of power amongst human overseers" },
+                { id: 30, text: "AI systems end up controlled by a group of humans representing a small range of human values" },
+                { id: 31, text: "Failing to solve the commitment races problem" },
+                { id: 33, text: "Persuasion tools leading to massive deterioration of collective epistemology" },
+                { id: 34, text: "Vulnerable world type 1: narrow AI enables many people to destroy world" },
+                { id: 35, text: "Vulnerable world 2a: many powerful actors able and incentivized to create civilization-devastating harms" }
+            ],
+            philosophical: [
+                { id: 8, text: "Metaethical error" },
+                { id: 9, text: "Metaphilosophical error" },
+                { id: 10, text: "Other kinds of philosophical errors in AI design" },
+                { id: 12, text: "Doing acausal reasoning in a wrong way" },
+                { id: 13, text: "Human-controlled AIs ending up with wrong values due to insufficient metaphilosophical paternalism" },
+                { id: 14, text: "Human-controlled AIs causing ethical disasters prior to reaching moral/philosophical maturity" },
+                { id: 15, text: "Intentional corruption of human values" },
+                { id: 16, text: "Unintentional corruption of human values" },
+                { id: 17, text: "Mind crime" },
+                { id: 18, text: "Premature value lock-in" }
+            ],
+            competitive: [
+                { id: 22, text: "Treacherous turn / loss of property rights due to insufficient competitiveness" },
+                { id: 23, text: "Gradual loss of influence due to insufficient competitiveness" },
+                { id: 24, text: "Utility maximizers having an economic and/or military competitive advantage" },
+                { id: 25, text: "The most competitive type of AI being too hard to align or to safely use" }
+            ]
+        };
+
+        const colors = {
+            technical: '#3498db',
+            coordination: '#e67e22',
+            philosophical: '#9b59b6',
+            competitive: '#e74c3c'
+        };
+
+        // Create SVG
+        const svg = document.getElementById('venn-svg');
+        const tooltip = document.getElementById('tooltip');
+        const svgRect = svg.getBoundingClientRect();
+        const width = svgRect.width;
+        const height = svgRect.height;
+
+        // Circle positions for 4-way Venn
+        const centerX = width / 2;
+        const centerY = height / 2;
+        const radius = Math.min(width, height) / 4;
+        const offset = radius * 0.6;
+
+        const positions = {
+            technical: { cx: centerX - offset, cy: centerY - offset },
+            coordination: { cx: centerX + offset, cy: centerY - offset },
+            philosophical: { cx: centerX - offset, cy: centerY + offset },
+            competitive: { cx: centerX + offset, cy: centerY + offset }
+        };
+
+        // Draw circles
+        Object.entries(positions).forEach(([category, pos]) => {
+            const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+            circle.setAttribute('cx', pos.cx);
+            circle.setAttribute('cy', pos.cy);
+            circle.setAttribute('r', radius);
+            circle.setAttribute('fill', colors[category]);
+            circle.setAttribute('class', 'circle');
+            svg.appendChild(circle);
+
+            // Label
+            const label = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+            const labelY = category.includes('technical') || category.includes('coordination')
+                ? pos.cy - radius - 20
+                : pos.cy + radius + 30;
+            label.setAttribute('x', pos.cx);
+            label.setAttribute('y', labelY);
+            label.setAttribute('class', 'circle-label');
+            label.setAttribute('fill', colors[category]);
+            label.textContent = category.charAt(0).toUpperCase() + category.slice(1);
+            svg.appendChild(label);
+        });
+
+        // Place risk markers
+        Object.entries(risks).forEach(([category, categoryRisks]) => {
+            const pos = positions[category];
+            const count = categoryRisks.length;
+
+            categoryRisks.forEach((risk, index) => {
+                // Distribute risks in a circle within the category
+                const angle = (index / count) * Math.PI * 2;
+                const spreadRadius = radius * 0.5;
+                const x = pos.cx + Math.cos(angle) * spreadRadius;
+                const y = pos.cy + Math.sin(angle) * spreadRadius;
+
+                // Risk marker circle
+                const marker = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+                marker.setAttribute('cx', x);
+                marker.setAttribute('cy', y);
+                marker.setAttribute('r', 6);
+                marker.setAttribute('fill', colors[category]);
+                marker.setAttribute('stroke', 'white');
+                marker.setAttribute('stroke-width', 2);
+                marker.setAttribute('class', 'risk-marker');
+                marker.dataset.risk = JSON.stringify(risk);
+                marker.dataset.category = category;
+                svg.appendChild(marker);
+
+                // Risk number
+                const number = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+                number.setAttribute('x', x);
+                number.setAttribute('y', y + 4);
+                number.setAttribute('class', 'risk-number');
+                number.textContent = risk.id;
+                svg.appendChild(number);
+
+                // Tooltip events
+                marker.addEventListener('mouseenter', function(e) {
+                    const riskData = JSON.parse(this.dataset.risk);
+                    tooltip.innerHTML = `<span class="tooltip-number">#${riskData.id}</span>${riskData.text}`;
+                    tooltip.style.left = e.pageX + 15 + 'px';
+                    tooltip.style.top = e.pageY + 15 + 'px';
+                    tooltip.classList.add('show');
+                });
+
+                marker.addEventListener('mousemove', function(e) {
+                    tooltip.style.left = e.pageX + 15 + 'px';
+                    tooltip.style.top = e.pageY + 15 + 'px';
+                });
+
+                marker.addEventListener('mouseleave', function() {
+                    tooltip.classList.remove('show');
+                });
+
+                marker.addEventListener('click', function() {
+                    const riskData = JSON.parse(this.dataset.risk);
+                    window.location.href = `index.html#risk-${riskData.id}`;
+                });
+            });
+        });
+
+        // Calculate overlap count (risks that mention other risks)
+        const overlapCount = [2, 6, 31, 32].length; // These have explicit relationships
+        document.getElementById('overlap-count').textContent = overlapCount;
+    </script>
+</body>
+</html>
