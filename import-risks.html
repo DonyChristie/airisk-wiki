@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Import Risks to Firestore</title>
+</head>
+<body>
+    <h1>Import Risks to Firestore</h1>
+    <button id="importBtn">Import All Risks</button>
+    <div id="status"></div>
+
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+        import { getFirestore, collection, doc, setDoc } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+        import { firebaseConfig } from './firebase-config.js';
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        const risks = [
+            { order: 1, title: "Insufficient time/resources for AI safety", content: "Insufficient time/resources for AI safety (for example caused by intelligence explosion or AI race)", tags: ["coordination"] },
+            { order: 2, title: "Insufficient global coordination", content: "Insufficient global coordination, leading to the above", tags: ["coordination"] },
+            { order: 3, title: "Misspecified or incorrectly learned goals/values", content: "Misspecified or incorrectly learned goals/values", tags: ["technical"] },
+            { order: 4, title: "Inner optimizers", content: "Inner optimizers", tags: ["technical"] },
+            { order: 5, title: "ML differentially accelerating easy to measure goals", content: "ML differentially accelerating easy to measure goals", tags: ["technical"] },
+            { order: 6, title: "Paul Christiano's influence-seeking behavior", content: "Paul Christiano's \"influence-seeking behavior\" (a combination of 3 and 4 above?)", tags: ["technical"] },
+            { order: 7, title: "AI accelerating intellectual progress in wrong direction", content: "AI generally accelerating intellectual progress in a wrong direction (e.g., accelerating unsafe/risky technologies more than knowledge/wisdom about how to safely use those technologies)", tags: ["coordination"] },
+            { order: 8, title: "Metaethical error", content: "Metaethical error", tags: ["philosophical"] },
+            { order: 9, title: "Metaphilosophical error", content: "Metaphilosophical error", tags: ["philosophical"] },
+            { order: 10, title: "Philosophical errors in AI design", content: "Other kinds of philosophical errors in AI design (e.g., giving AI a wrong prior or decision theory)", tags: ["philosophical"] },
+            { order: 11, title: "Design/coding errors", content: "Other design/coding errors (e.g., accidentally putting a minus sign in front of utility function, supposedly corrigible AI not actually being corrigible)", tags: ["technical"] },
+            { order: 12, title: "Acausal reasoning errors", content: "Doing acausal reasoning in a wrong way (e.g., failing to make good acausal trades, being acausally extorted, failing to acausally influence others who can be so influenced)", tags: ["philosophical"] },
+            { order: 13, title: "Insufficient metaphilosophical paternalism", content: "Human-controlled AIs ending up with wrong values due to insufficient \"metaphilosophical paternalism\"", tags: ["philosophical"] },
+            { order: 14, title: "Ethical disasters before philosophical maturity", content: "Human-controlled AIs causing ethical disasters (e.g., large scale suffering that can't be \"balanced out\" later) prior to reaching moral/philosophical maturity", tags: ["philosophical"] },
+            { order: 15, title: "Intentional corruption of human values", content: "Intentional corruption of human values", tags: ["philosophical"] },
+            { order: 16, title: "Unintentional corruption of human values", content: "Unintentional corruption of human values", tags: ["philosophical"] },
+            { order: 17, title: "Mind crime", content: "Mind crime (disvalue unintentionally incurred through morally relevant simulations in AIs' minds)", tags: ["philosophical"] },
+            { order: 18, title: "Premature value lock-in", content: "Premature value lock-in (i.e., freezing one's current conception of what's good into a utility function)", tags: ["philosophical"] },
+            { order: 19, title: "Extortion between AIs", content: "Extortion between AIs leading to vast disvalue", tags: ["coordination"] },
+            { order: 20, title: "Distributional shifts", content: "Distributional shifts causing apparently safe/aligned AIs to stop being safe/aligned", tags: ["technical"] },
+            { order: 21, title: "Value drift and self-modification errors", content: "Value drift and other kinds of error as AIs self-modify, or AIs failing to solve value alignment for more advanced AIs", tags: ["technical"] },
+            { order: 22, title: "Treacherous turn", content: "Treacherous turn / loss of property rights due to insufficient competitiveness of humans & human-aligned AIs", tags: ["competitive"] },
+            { order: 23, title: "Gradual loss of influence", content: "Gradual loss of influence due to insufficient competitiveness of humans & human-aligned AIs", tags: ["competitive"] },
+            { order: 24, title: "Utility maximizers' competitive advantage", content: "Utility maximizers / goal-directed AIs having an economic and/or military competitive advantage due to relative ease of cooperation/coordination, defense against value corruption and other forms of manipulation and attack, leading to one or more of the above", tags: ["competitive"] },
+            { order: 25, title: "Most competitive AI too hard to align", content: "In general, the most competitive type of AI being too hard to align or to safely use", tags: ["competitive"] },
+            { order: 26, title: "Computational resources too cheap", content: "Computational resources being too cheap, leading to one or more of the above", tags: ["technical"] },
+            { order: 27, title: "Many-humans many-AIs alignment", content: "Failure to learn how to deal with alignment in the many-humans, many-AIs case even if single-human, single-AI alignment is solved (suggested by William Saunders)", tags: ["technical"] },
+            { order: 28, title: "Economics of AGI causing power concentration", content: "Economics of AGI causing concentration of power amongst human overseers", tags: ["coordination"] },
+            { order: 29, title: "Inability to specify real-world goals", content: "Inability to specify any 'real-world' goal for an artificial agent (suggested by Michael Cohen)", tags: ["technical"] },
+            { order: 30, title: "Narrow range of human values in control", content: "AI systems end up controlled by a group of humans representing a small range of human values (ie. an ideological or religious group that imposes values on everyone else) (suggested by William Saunders)", tags: ["coordination"] },
+            { order: 31, title: "Commitment races problem", content: "Failing to solve the commitment races problem, i.e. building AI in such a way that some sort of disastrous outcome occurs due to unwise premature commitments (or unwise hesitation in making commitments!). This overlaps significantly with #27, #19, and #12.", tags: ["coordination"] },
+            { order: 32, title: "Demons in imperfect search", content: "Demons in imperfect search (similar, but distinct from, inner optimizers.)", tags: ["technical"] },
+            { order: 33, title: "Persuasion tools deteriorating epistemology", content: "Persuasion tools or some other form of narrow AI leads to a massive deterioration of collective epistemology, dooming humanity to stumble inexorably into some disastrous end or other.", tags: ["coordination"] },
+            { order: 34, title: "Vulnerable world type 1", content: "Vulnerable world type 1: narrow AI enables many people to destroy world, e.g. R&D tools that dramatically lower the cost for building WMD's.", tags: ["coordination"] },
+            { order: 35, title: "Vulnerable world type 2a", content: "Vulnerable world 2a: We end up with many powerful actors able and incentivized to create civilization-devastating harms.", tags: ["coordination"] }
+        ];
+
+        document.getElementById('importBtn').addEventListener('click', async () => {
+            const statusDiv = document.getElementById('status');
+            statusDiv.innerHTML = '<p>Importing risks...</p>';
+
+            try {
+                for (const risk of risks) {
+                    const riskId = `risk-${risk.order}`;
+                    await setDoc(doc(db, 'risks', riskId), {
+                        ...risk,
+                        createdAt: new Date(),
+                        updatedAt: new Date()
+                    });
+                    statusDiv.innerHTML += `<p>✓ Imported: ${risk.title}</p>`;
+                }
+                statusDiv.innerHTML += '<p><strong>All risks imported successfully!</strong></p>';
+            } catch (error) {
+                statusDiv.innerHTML += `<p style="color: red;">Error: ${error.message}</p>`;
+                console.error('Import error:', error);
+            }
+        });
+    </script>
+</body>
+</html>
