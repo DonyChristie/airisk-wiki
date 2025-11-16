@@ -32,7 +32,7 @@ nginx -t && systemctl reload nginx
 if [ $? -eq 0 ]; then
     print_status "✅ Deployment completed successfully!"
     print_status "🌐 Site: https://airisk.wiki"
-    print_status "📁 Static site with Firebase backend"
+    print_status "📁 Static wiki with Firebase (Auth + Firestore)"
 else
     print_error "❌ Nginx reload failed!"
     exit 1
